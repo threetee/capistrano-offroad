@@ -54,39 +54,39 @@ Capistrano::Configuration.instance(:must_exist).load do
     end
 
     desc "Start processes"
-    task :start do
+    task :start, :except => { :no_release => true } do
       to_start = _target(:supervisord_start_group)
       supervisorctl "start #{to_start}", :try_start => true
     end
 
     desc "Stop processes"
-    task :stop do
+    task :stop, :except => { :no_release => true } do
       to_stop = _target(:supervisord_stop_group)
       supervisorctl "stop #{to_stop}", :try_start => false
     end
 
     desc "Restart processes"
-    task :restart do
+    task :restart, :except => { :no_release => true } do
       to_restart = _target(:supervisord_start_group)
       supervisorctl "restart #{to_restart}"
     end
 
     desc "Display status of processes"
-    task :status do
+    task :status, :except => { :no_release => true } do
       supervisorctl "status", :try_start => false
     end
 
     desc "Display detailed list of processes"
-    task :processes do
+    task :processes, :except => { :no_release => true } do
       run "test -f #{supervisord_pidfile_path} && pstree -a #{supervisord_pid}"
     end
 
     desc "Reload supervisor daemon"
-    task :reload_supervisord do
+    task :reload_supervisord, :except => { :no_release => true } do
       supervisorctl "reload"
     end
 
-    task :run_supervisorctl do
+    task :run_supervisorctl, :except => { :no_release => true } do
       set_from_env_or_ask :command, "supervisorctl command: "
       supervisorctl "#{command}", :try_start => false
     end
