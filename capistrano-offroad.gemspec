@@ -9,7 +9,7 @@ $:.unshift lib unless $:.include?(lib)
 require 'capistrano-offroad/version'
 
 Gem::Specification.new do |s|
-  s.name = "capistrano-offroad"
+  s.name = "threetee-capistrano-offroad"
   s.version = CapistranoOffroad::VERSION::STRING
   s.summary = "Capistrano add-ons and recipes for non-rails projects"
   s.description = <<EOF

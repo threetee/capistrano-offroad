@@ -11,45 +11,45 @@ Capistrano::Configuration.instance(:must_exist).load do
 
   namespace :daemontools do
     desc "Create symlink in svscan directory"
-    task :create_symlink do
+    task :create_symlink, :except => { :no_release => true } do
       sudo "ln -s -v #{current_path} #{svscan_root}/#{supervise_name}"
     end
 
     desc "[internal] Remove symlink from svscan directory"
-    task :do_remove_symlink do
+    task :do_remove_symlink, :except => { :no_release => true } do
       sudo "rm -v #{svscan_root}/#{supervise_name}"
     end
 
     desc "Remove symlink from svscan directory and stop supervise"
-    task :remove_symlink do
+    task :remove_symlink, :except => { :no_release => true } do
       do_remove_symlink
       sudo "svc -x -t #{current_path}"
     end
 
     desc "Supervise status of current release"
-    task :status do
+    task :status, :except => { :no_release => true } do
       sudo "svstat #{svscan_root}/#{supervise_name}"
     end
 
     desc "Supervise status of all releases"
-    task :relstatus do
+    task :relstatus, :except => { :no_release => true } do
       sudo "svstat #{releases_path}/*"
     end
   end
 
   namespace :deploy do
     desc "Start service (svc -u)"
-    task :start do
+    task :start, :except => { :no_release => true } do
       svc "-u"
     end
 
     desc "Stop service (svc -d)"
-    task :stop do
+    task :stop, :except => { :no_release => true } do
       svc "-d"
     end
 
     desc "Restart service (svc -t)"
-    task :restart do
+    task :restart, :except => { :no_release => true } do
       svc "-t"
     end
 
@@ -58,7 +58,7 @@ Capistrano::Configuration.instance(:must_exist).load do
 
   WARNING: rollback is broken!
   DESC
-    task :symlink do
+    task :symlink, :except => { :no_release => true } do
       on_rollback { run "rm -f #{current_path}; ln -s #{previous_release} #{current_path}; true" } # FIXME!
       run "rm -f #{current_path}"
       sleep 5

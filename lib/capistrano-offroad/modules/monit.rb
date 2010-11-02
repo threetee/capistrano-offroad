@@ -14,37 +14,37 @@ Capistrano::Configuration.instance(:must_exist).load do
 
   namespace :deploy do
     desc "Start processes"
-    task :start do
+    task :start, :except => { :no_release => true } do
       process = ENV['PROCESS'] || 'all'
       sudo "#{monit_command} #{_monit_args} start #{process}"
     end
 
     desc "Stop processes"
-    task :stop do
+    task :stop, :except => { :no_release => true } do
       process = ENV['PROCESS'] || 'all'
       sudo "#{monit_command} #{_monit_args} stop #{process}"
     end
 
     desc "Restart processes"
-    task :restart do
+    task :restart, :except => { :no_release => true } do
       process = ENV['PROCESS'] || 'all'
       sudo "#{monit_command} #{_monit_args} restart #{process}"
     end
 
     namespace :status do
       desc "Status summary"
-      task :default do
+      task :default, :except => { :no_release => true } do
         sudo "#{monit_command} #{_monit_args} summary"
       end
 
       desc "Full status"
-      task :full do
+      task :full, :except => { :no_release => true } do
         sudo "#{monit_command} #{_monit_args} status"
       end
     end
 
     desc "Reload monit"
-    task :reload_monit do
+    task :reload_monit, :except => { :no_release => true } do
       sudo "#{monit_command} reload"
     end
   end
